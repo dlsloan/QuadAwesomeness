@@ -102,7 +102,7 @@ void Uart::Init() {
 	// This is where we will do the register initializations that are all based on the base_address.
 
 	// Set the initial baud rate
-	SetBaud(9600);
+	SetBaud(115200);
 
 	// Set the CR2 first
 	UART_CR2(uartBase) = 0; // All default reset options are good
