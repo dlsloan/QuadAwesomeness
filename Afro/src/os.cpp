@@ -97,7 +97,7 @@ namespace OS {
 	}
 
 	void __exitCritical() {
-		canSwitch = true;
+		//canSwitch = true;
 		if (triedSwitch) {
 			triedSwitch = false;
 			SCB->ICSR = SCB_ICSR_PENDSVSET;

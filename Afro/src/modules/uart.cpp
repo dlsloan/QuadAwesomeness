@@ -3,6 +3,8 @@
 #include <uart.h>
 #include <task.h>
 #include <stm32f10x_rcc.h>
+#include "BlinkLed.h"
+extern BlinkLed blinkLed;
 
 
 Uart Uart::uarts[5] = {Uart(UART1_BASE),Uart(UART2_BASE),Uart(UART3_BASE),Uart(UART4_BASE),Uart(UART5_BASE)};
@@ -36,12 +38,12 @@ Uart::Uart(u32 address) {
 
 	}
 
-	Init();
-}
 
+}
 
 void Uart::Init() {
 	GPIO_InitTypeDef GPIO_InitStruct;
+	NVIC_InitTypeDef NVIC_InitStruct;
 
 
 	switch(index) {
@@ -60,6 +62,14 @@ void Uart::Init() {
 			GPIO_InitStruct.GPIO_Speed = GPIO_Speed_2MHz;
 			GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 			GPIO_Init(GPIOA,&GPIO_InitStruct);
+
+
+			// Let's also enable the interrupts via the NVIC
+			NVIC_InitStruct.NVIC_IRQChannel = USART1_IRQn;
+			NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;
+			NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 3;
+			NVIC_InitStruct.NVIC_IRQChannelSubPriority = 0;
+			NVIC_Init(&NVIC_InitStruct);
 			break;
 		case 1:
 			RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2,ENABLE);
@@ -76,6 +86,14 @@ void Uart::Init() {
 			GPIO_InitStruct.GPIO_Speed = GPIO_Speed_2MHz;
 			GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 			GPIO_Init(GPIOA,&GPIO_InitStruct);
+
+
+			// Let's also enable the interrupts via the NVIC
+			/*NVIC_InitStruct.NVIC_IRQChannel = USART2_IRQn;
+			NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;
+			NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 0;
+			NVIC_InitStruct.NVIC_IRQChannelSubPriority = 0;
+			NVIC_Init(&NVIC_InitStruct);*/
 			break;
 		case 2:
 			RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3,ENABLE);
@@ -92,6 +110,13 @@ void Uart::Init() {
 			GPIO_InitStruct.GPIO_Speed = GPIO_Speed_2MHz;
 			GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 			GPIO_Init(GPIOB,&GPIO_InitStruct);
+
+			// Let's also enable the interrupts via the NVIC
+			/*NVIC_InitStruct.NVIC_IRQChannel = USART3_IRQn;
+			NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;
+			NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 0;
+			NVIC_InitStruct.NVIC_IRQChannelSubPriority = 0;
+			NVIC_Init(&NVIC_InitStruct);*/
 			break;
 
 	}
@@ -104,18 +129,25 @@ void Uart::Init() {
 	// Set the initial baud rate
 	SetBaud(115200);
 
+
+
 	// Set the CR2 first
 	UART_CR2(uartBase) = 0; // All default reset options are good
 
 	// Set the CR1
-	/*UART_CR1(uartBase) =	UART_CR1_UART_ENABLE | UART_CR1_WORD_LENGTH_8 | UART_CR1_WAKE_IDLE | UART_CR1_PARITY_DISABLE |
+	UART_CR1(uartBase) =	UART_CR1_UART_ENABLE | UART_CR1_WORD_LENGTH_8 | UART_CR1_WAKE_IDLE | UART_CR1_PARITY_DISABLE |
 							UART_CR1_PARITY_SELECTION_EVEN | UART_CR1_PARITY_INTERRUPT_DISABLE | UART_CR1_TXEI_DISABLE |
 							UART_CR1_TCI_DISABLE | UART_CR1_RXNEI_ENABLE | UART_CR1_IDLIE_DISABLE | UART_CR1_TE_ENABLE |
-							UART_CR1_RE_ENABLE | UART_CR1_RWU_ACTIVE | UART_CR1_NO_BREAK_SEND;*/
+							UART_CR1_RE_ENABLE | UART_CR1_RWU_ACTIVE | UART_CR1_NO_BREAK_SEND;
+
+
+
+	// For startup without interrupts
+	/*
 	UART_CR1(uartBase) =	UART_CR1_UART_ENABLE | UART_CR1_WORD_LENGTH_8 | UART_CR1_WAKE_IDLE | UART_CR1_PARITY_DISABLE |
 							UART_CR1_PARITY_SELECTION_EVEN | UART_CR1_PARITY_INTERRUPT_DISABLE | UART_CR1_TXEI_DISABLE |
 							UART_CR1_TCI_DISABLE | UART_CR1_RXNEI_DISABLE | UART_CR1_IDLIE_DISABLE | UART_CR1_TE_ENABLE |
-							UART_CR1_RE_ENABLE | UART_CR1_RWU_ACTIVE | UART_CR1_NO_BREAK_SEND;
+							UART_CR1_RE_ENABLE | UART_CR1_RWU_ACTIVE | UART_CR1_NO_BREAK_SEND;*/
 
 
 
@@ -128,6 +160,8 @@ void Uart::Init() {
 	uartRxWritePos = 0;
 	uartRxReadPos = 0;
 	uartRxOverflow = false;
+
+
 }
 
 
@@ -154,6 +188,8 @@ Uart * Uart::GetUart(UART_CONNECTION connection) {
 	default:
 		pointer = NULL;
 	}
+
+	pointer->Init();
 	return pointer;
 }
 
@@ -189,6 +225,7 @@ void Uart::WriteBytes(void * data, int nBytesToWrite) {
 	/******************************************/
 	/***************UNCOMMENT******************/
 	/******************************************/
+
 	writeLock.PendLock();
 
 
@@ -225,10 +262,14 @@ void Uart::WriteBytes(void * data, int nBytesToWrite) {
 		UART_CR1(uartBase) |= UART_CR1_TXEI_ENABLE;
 	}
 
+
+
 	/******************************************/
 	/***************UNCOMMENT******************/
 	/******************************************/
 	writeLock.Release();
+
+
 
 
 }
@@ -245,6 +286,7 @@ int Uart::WriteBytesNonBlocking(void * data, int nBytesToWrite) {
 	/******************************************/
 	/***************UNCOMMENT******************/
 	/******************************************/
+
 	writeLock.PendLock();
 
 	// First let's cast the data into a usable byte format
@@ -516,12 +558,16 @@ u8 Uart::ReadByteNonBlocking() {
 }
 
 
+
 inline void __attribute__((always_inline)) USART_IRQHandler(int uartNumber){
+
 	u32 baseAddress = Uart::uarts[uartNumber].uartBase;
 
 	// Let's see which interrupt it was
 	// If the read data is not empty, that means we have data to read into the buffer
 	if(UART_SR(baseAddress) & UART_SR_READ_DATA_NOT_EMPTY_INTERRUPT) {
+
+
 		int pos = Uart::uarts[uartNumber].uartRxWritePos;
 		Uart::uarts[uartNumber].uartBufferRx[pos++] = (u8)UART_DR(baseAddress);
 
@@ -542,7 +588,7 @@ inline void __attribute__((always_inline)) USART_IRQHandler(int uartNumber){
 
 		// If there is no data to write, just clear the bit
 		if(pos == Uart::uarts[uartNumber].uartTxWritePos) {
-			UART_CR1(baseAddress) &= UART_CR1_TXEI_ENABLE; // Turn off the interrupt
+			UART_CR1(baseAddress) &= ~UART_CR1_TXEI_ENABLE; // Turn off the interrupt
 		}
 		else {
 			u8 data = Uart::uarts[uartNumber].uartBufferTx[pos++];
@@ -556,6 +602,7 @@ inline void __attribute__((always_inline)) USART_IRQHandler(int uartNumber){
 			Uart::uarts[uartNumber].uartTxReadPos = pos;
 		}
 	}
+
 }
 
 // Interrupt Service Routine for the specific Uart

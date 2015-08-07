@@ -12,6 +12,7 @@
 #include <os.h>
 #include <core_cmInstr.h>
 #include <uart.h>
+#include <string.h>
 
 #include <_boot.h>
 
@@ -90,6 +91,8 @@ int kernel_main(void* args) {
 
 	Uart* afroU = Uart::GetUart(Uart::AfroJack);
 
+
+
 	// Infinite loop
 	int cnt = 30;
 	while (cnt--)
@@ -103,12 +106,20 @@ int kernel_main(void* args) {
       blinkLed.statusOff();
 	  next = OS::SystemTicks() + ticksPsecond / 2;
 	  while ((int)(next - OS::SystemTicks()) > 0){}
-	  afroU->WriteBasic('a');
+	  char * writeThings = "Here I am writing things\r\n";
+	  int nBytes = strlen(writeThings);
+	  afroU->WriteBytes(writeThings,nBytes);
 	  ++seconds;
 
 	  // Count seconds on the trace device.
 	  trace_printf("Second %u\n", seconds);
 	}
+
+
+
+	blinkLed.turnOn();
+	u32 next = OS::SystemTicks() + ticksPsecond * 4;
+	while ((int)(next - OS::SystemTicks()) > 0){}
 
 	_boot_load();
 	// should never reach here

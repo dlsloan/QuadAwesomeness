@@ -27,7 +27,7 @@ src/modules/uart.o: ../src/modules/uart.cpp ../include/os.h \
  ../system/include/stm32f1-stdperiph/stm32f10x_usart.h \
  ../system/include/stm32f1-stdperiph/stm32f10x_wwdg.h \
  ../system/include/stm32f1-stdperiph/misc.h ../include/os/task.h \
- ../include/modules/uart.h ../include/os/mutex.h
+ ../include/modules/uart.h ../include/os/mutex.h ../include/BlinkLed.h
 
 ../include/os.h:
 
@@ -96,3 +96,5 @@ src/modules/uart.o: ../src/modules/uart.cpp ../include/os.h \
 ../include/modules/uart.h:
 
 ../include/os/mutex.h:
+
+../include/BlinkLed.h:
