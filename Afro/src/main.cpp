@@ -89,12 +89,22 @@ int kernel_main(void* args) {
 
 	u32 ticksPsecond = 10000;
 
-	Uart* afroU = Uart::GetUart(Uart::AfroJack);
+	Uart* uart1 = Uart::GetUart(Uart::AfroJack);
+	Uart* uart2 = Uart::GetUart(Uart::GPS);
+	Uart* uart3 = Uart::GetUart(Uart::XBee);
+
+	char read_value = 0;
+	while(read_value != 'q'){
+		read_value = uart1->ReadByte(0);
+		uart1->WriteByte(read_value);
+		uart2->WriteByte(read_value);
+		uart3->WriteByte(read_value);
+	}
 
 
 
 	// Infinite loop
-	int cnt = 30;
+	int cnt = 10;
 	while (cnt--)
 	{
 	  blinkLed.statusOn();
@@ -106,9 +116,14 @@ int kernel_main(void* args) {
       blinkLed.statusOff();
 	  next = OS::SystemTicks() + ticksPsecond / 2;
 	  while ((int)(next - OS::SystemTicks()) > 0){}
-	  char * writeThings = "Here I am writing things\r\n";
-	  int nBytes = strlen(writeThings);
-	  afroU->WriteBytes(writeThings,nBytes);
+	  char * writeUart1 = (char*)"Here I am writing things for Uart1\r\n";
+	  char * writeUart2 = (char*)"Here I am writing things for Uart2\r\n";
+	  char * writeUart3 = (char*)"Here I am writing things for Uart3\r\n";
+
+
+	  uart1->WriteBytes(writeUart1,strlen(writeUart1));
+	  uart2->WriteBytes(writeUart1,strlen(writeUart1));
+	  uart3->WriteBytes(writeUart3,strlen(writeUart3));
 	  ++seconds;
 
 	  // Count seconds on the trace device.

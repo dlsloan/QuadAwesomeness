@@ -274,6 +274,66 @@ void Uart::WriteBytes(void * data, int nBytesToWrite) {
 
 }
 
+// This function will write the input data with the specified number of bytes to the uart. It may cause blocking if the uart buffer is full.
+// Inputs:
+// void * data -> A pointer to the data to be written to the uart.
+// int nBytesToWrite -> The number of bytes to write to the Uart from the void * data buffer.
+//
+// Returns:
+// Void
+void Uart::WriteByte(u8 data) {
+
+	/******************************************/
+	/***************UNCOMMENT******************/
+	/******************************************/
+
+	writeLock.PendLock();
+
+
+
+
+	// For each byte on the data, we need to check the uart register to see if it's empty
+	// In order to make sure it sends in the right order, we need to send the end of the write buffer first
+
+	// Get the last TxWritePosition in the buffer
+	int pos = uartTxWritePos;
+
+	// Check if we need to wrap around to the beginning of the buffer again
+	int new_position = (pos == UART_BUFFER_SIZE - 1) ? 0 : pos + 1;
+
+	// If the Uart has not taken any of the data yet do a task switch.
+	// This would happen when we fill up the buffer completely and the hardware hasn't caught up yet.
+
+	// NOTE THIS IS COMMENTED OUT BECAUSE TASKSWITCH DOESN'T EXIST YET
+	/******************************************/
+	/***************UNCOMMENT******************/
+	/******************************************/
+	while(uartTxReadPos == new_position) OS::Task::Switch();
+
+	// Once the buffer is clear, we can write the data to the buffer
+	uartBufferTx[pos] = data;
+
+	// Now we just update the write position
+	uartTxWritePos = new_position;
+
+	// And now we can enable the interrupt for the TXE (transfer empty in the uart).
+	// This will allow us to shift in more data via the interrupt service routine
+	UART_CR1(uartBase) |= UART_CR1_TXEI_ENABLE;
+
+
+
+
+	/******************************************/
+	/***************UNCOMMENT******************/
+	/******************************************/
+	writeLock.Release();
+
+
+
+
+}
+
+
 // This function will attempt to write the number of specified bytes and data to the uart. If it does not all fit in the buffer, it will fail and not block.
 // Inputs:
 // void * data -> A pointer to the data to be written to the uart.
@@ -611,7 +671,10 @@ extern "C" void USART1_IRQHandler() {
 }
 
 extern "C" void USART2_IRQHandler() {
+	blinkLed.turnOn();
+	while(1);
 	USART_IRQHandler(1);
+
 }
 
 extern "C" void USART3_IRQHandler() {

@@ -20,7 +20,7 @@ void Mutex::PendLock() {
 			} else {
 				this->locked = true;
 				OS::__exitCritical();
-				break;
+				return;
 			}
 		}
 	}
