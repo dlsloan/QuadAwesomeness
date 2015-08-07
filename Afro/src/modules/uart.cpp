@@ -89,11 +89,11 @@ void Uart::Init() {
 
 
 			// Let's also enable the interrupts via the NVIC
-			/*NVIC_InitStruct.NVIC_IRQChannel = USART2_IRQn;
+			NVIC_InitStruct.NVIC_IRQChannel = USART2_IRQn;
 			NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;
 			NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 0;
 			NVIC_InitStruct.NVIC_IRQChannelSubPriority = 0;
-			NVIC_Init(&NVIC_InitStruct);*/
+			NVIC_Init(&NVIC_InitStruct);
 			break;
 		case 2:
 			RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3,ENABLE);
@@ -112,11 +112,11 @@ void Uart::Init() {
 			GPIO_Init(GPIOB,&GPIO_InitStruct);
 
 			// Let's also enable the interrupts via the NVIC
-			/*NVIC_InitStruct.NVIC_IRQChannel = USART3_IRQn;
+			NVIC_InitStruct.NVIC_IRQChannel = USART3_IRQn;
 			NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;
 			NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 0;
 			NVIC_InitStruct.NVIC_IRQChannelSubPriority = 0;
-			NVIC_Init(&NVIC_InitStruct);*/
+			NVIC_Init(&NVIC_InitStruct);
 			break;
 
 	}
@@ -671,10 +671,7 @@ extern "C" void USART1_IRQHandler() {
 }
 
 extern "C" void USART2_IRQHandler() {
-	blinkLed.turnOn();
-	while(1);
 	USART_IRQHandler(1);
-
 }
 
 extern "C" void USART3_IRQHandler() {

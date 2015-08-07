@@ -122,7 +122,7 @@ int kernel_main(void* args) {
 
 
 	  uart1->WriteBytes(writeUart1,strlen(writeUart1));
-	  uart2->WriteBytes(writeUart1,strlen(writeUart1));
+	  uart2->WriteBytes(writeUart2,strlen(writeUart2));
 	  uart3->WriteBytes(writeUart3,strlen(writeUart3));
 	  ++seconds;
 

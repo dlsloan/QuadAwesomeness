@@ -1653,10 +1653,10 @@ END GROUP
 
 .inits          0x000000000800029c       0x30
                 0x000000000800029c                __data_regions_array_start = .
-                0x000000000800029c        0x4 LONG 0x80014dc LOADADDR (.data)
+                0x000000000800029c        0x4 LONG 0x80015bc LOADADDR (.data)
                 0x00000000080002a0        0x4 LONG 0x20000000 ADDR (.data)
                 0x00000000080002a4        0x4 LONG 0x20000028 (ADDR (.data) + SIZEOF (.data))
-                0x00000000080002a8        0x4 LONG 0x80014dc LOADADDR (.data_CCMRAM)
+                0x00000000080002a8        0x4 LONG 0x80015bc LOADADDR (.data_CCMRAM)
                 0x00000000080002ac        0x4 LONG 0x0 ADDR (.data_CCMRAM)
                 0x00000000080002b0        0x4 LONG 0x0 (ADDR (.data_CCMRAM) + SIZEOF (.data_CCMRAM))
                 0x00000000080002b4                __data_regions_array_end = .
@@ -1690,7 +1690,7 @@ END GROUP
 .flashtext
  *(.flashtext .flashtext.*)
 
-.text           0x00000000080002cc     0x1210
+.text           0x00000000080002cc     0x12f0
  *(.text .text.*)
  .text.NVIC_Init
                 0x00000000080002cc       0x98 ./system/src/stm32f1-stdperiph/misc.o
@@ -1782,117 +1782,117 @@ END GROUP
                 0x0000000008000bb8       0x30 ./src/modules/uart.o
                 0x0000000008000bb8                Uart::SetBaud(int)
  .text._ZN4Uart4InitEv
-                0x0000000008000be8      0x164 ./src/modules/uart.o
+                0x0000000008000be8      0x1a0 ./src/modules/uart.o
                 0x0000000008000be8                Uart::Init()
  .text._ZN4Uart7GetUartENS_15UART_CONNECTIONE
-                0x0000000008000d4c       0x44 ./src/modules/uart.o
-                0x0000000008000d4c                Uart::GetUart(Uart::UART_CONNECTION)
+                0x0000000008000d88       0x44 ./src/modules/uart.o
+                0x0000000008000d88                Uart::GetUart(Uart::UART_CONNECTION)
  .text._ZN4Uart10WriteBytesEPvi
-                0x0000000008000d90       0x64 ./src/modules/uart.o
-                0x0000000008000d90                Uart::WriteBytes(void*, int)
+                0x0000000008000dcc       0x64 ./src/modules/uart.o
+                0x0000000008000dcc                Uart::WriteBytes(void*, int)
  .text._ZN4Uart9WriteByteEh
-                0x0000000008000df4       0x50 ./src/modules/uart.o
-                0x0000000008000df4                Uart::WriteByte(unsigned char)
+                0x0000000008000e30       0x50 ./src/modules/uart.o
+                0x0000000008000e30                Uart::WriteByte(unsigned char)
  .text._ZN4Uart8ReadByteEi
-                0x0000000008000e44       0x5c ./src/modules/uart.o
-                0x0000000008000e44                Uart::ReadByte(int)
+                0x0000000008000e80       0x5c ./src/modules/uart.o
+                0x0000000008000e80                Uart::ReadByte(int)
  .text.USART1_IRQHandler
-                0x0000000008000ea0       0x84 ./src/modules/uart.o
-                0x0000000008000ea0                USART1_IRQHandler
+                0x0000000008000edc       0x84 ./src/modules/uart.o
+                0x0000000008000edc                USART1_IRQHandler
  .text.USART2_IRQHandler
-                0x0000000008000f24       0x10 ./src/modules/uart.o
-                0x0000000008000f24                USART2_IRQHandler
+                0x0000000008000f60       0x88 ./src/modules/uart.o
+                0x0000000008000f60                USART2_IRQHandler
  .text.USART3_IRQHandler
-                0x0000000008000f34       0x88 ./src/modules/uart.o
-                0x0000000008000f34                USART3_IRQHandler
+                0x0000000008000fe8       0x88 ./src/modules/uart.o
+                0x0000000008000fe8                USART3_IRQHandler
  .text._GLOBAL__sub_I__ZN4Uart5uartsE
-                0x0000000008000fbc       0x10 ./src/modules/uart.o
+                0x0000000008001070       0x10 ./src/modules/uart.o
  .text._ZN8BlinkLed7powerUpEv
-                0x0000000008000fcc       0x68 ./src/BlinkLed.o
-                0x0000000008000fcc                BlinkLed::powerUp()
- .text.main     0x0000000008001034        0x8 ./src/main.o
-                0x0000000008001034                main
+                0x0000000008001080       0x68 ./src/BlinkLed.o
+                0x0000000008001080                BlinkLed::powerUp()
+ .text.main     0x00000000080010e8        0x8 ./src/main.o
+                0x00000000080010e8                main
  .text._Z11kernel_mainPv
-                0x000000000800103c      0x108 ./src/main.o
-                0x000000000800103c                kernel_main(void*)
+                0x00000000080010f0      0x10c ./src/main.o
+                0x00000000080010f0                kernel_main(void*)
  .text.HardFault_Handler
-                0x0000000008001144       0x3c ./src/main.o
-                0x0000000008001144                HardFault_Handler
+                0x00000000080011fc       0x3c ./src/main.o
+                0x00000000080011fc                HardFault_Handler
  .text._ZN2OSL15CurrentTaskLinkEv
-                0x0000000008001180        0xc ./src/os.o
+                0x0000000008001238        0xc ./src/os.o
  .text._ZN2OSL12AtKernelTaskEv
-                0x000000000800118c       0x18 ./src/os.o
+                0x0000000008001244       0x18 ./src/os.o
  .text._ZN2OSL16ReadTaskStackPtrEv
-                0x00000000080011a4        0x8 ./src/os.o
+                0x000000000800125c        0x8 ./src/os.o
  .text._ZN2OSL11SaveContextEv
-                0x00000000080011ac       0x10 ./src/os.o
+                0x0000000008001264       0x10 ./src/os.o
  .text._ZN2OSL11LoadContextEv
-                0x00000000080011bc       0x10 ./src/os.o
+                0x0000000008001274       0x10 ./src/os.o
  .text._ZN2OSL17WriteTaskStackPtrEPv
-                0x00000000080011cc        0x8 ./src/os.o
+                0x0000000008001284        0x8 ./src/os.o
  .text._ZN2OSL21AdvanceAndCleanupTaskEv
-                0x00000000080011d4       0x58 ./src/os.o
+                0x000000000800128c       0x58 ./src/os.o
  .text._ZN2OSL10callKernelEPv
-                0x000000000800122c        0x8 ./src/os.o
+                0x00000000080012e4        0x8 ./src/os.o
  .text._Z41__static_initialization_and_destruction_0ii
-                0x0000000008001234       0x24 ./src/os.o
+                0x00000000080012ec       0x24 ./src/os.o
  .text._ZN2OS4InitEv
-                0x0000000008001258       0x50 ./src/os.o
-                0x0000000008001258                OS::Init()
+                0x0000000008001310       0x50 ./src/os.o
+                0x0000000008001310                OS::Init()
  .text._ZN2OS11SystemTicksEv
-                0x00000000080012a8        0xc ./src/os.o
-                0x00000000080012a8                OS::SystemTicks()
+                0x0000000008001360        0xc ./src/os.o
+                0x0000000008001360                OS::SystemTicks()
  .text._ZN2OS11CurrentTaskEv
-                0x00000000080012b4        0xc ./src/os.o
-                0x00000000080012b4                OS::CurrentTask()
+                0x000000000800136c        0xc ./src/os.o
+                0x000000000800136c                OS::CurrentTask()
  .text._ZN2OS8SetErrorEPPc
-                0x00000000080012c0        0xc ./src/os.o
-                0x00000000080012c0                OS::SetError(char**)
+                0x0000000008001378        0xc ./src/os.o
+                0x0000000008001378                OS::SetError(char**)
  .text._ZN2OS10SwitchTaskEv
-                0x00000000080012cc       0x10 ./src/os.o
-                0x00000000080012cc                OS::SwitchTask()
+                0x0000000008001384       0x10 ./src/os.o
+                0x0000000008001384                OS::SwitchTask()
  .text._ZN2OS9__endTaskEv
-                0x00000000080012dc       0x14 ./src/os.o
-                0x00000000080012dc                OS::__endTask()
+                0x0000000008001394       0x14 ./src/os.o
+                0x0000000008001394                OS::__endTask()
  .text._ZN2OS15__enterCriticalEv
-                0x00000000080012f0        0xc ./src/os.o
-                0x00000000080012f0                OS::__enterCritical()
+                0x00000000080013a8        0xc ./src/os.o
+                0x00000000080013a8                OS::__enterCritical()
  .text._ZN2OS14__exitCriticalEv
-                0x00000000080012fc       0x24 ./src/os.o
-                0x00000000080012fc                OS::__exitCritical()
+                0x00000000080013b4       0x24 ./src/os.o
+                0x00000000080013b4                OS::__exitCritical()
  .text._ZN2OS9__addTaskEPNS_10_task_linkE
-                0x0000000008001320       0x34 ./src/os.o
-                0x0000000008001320                OS::__addTask(OS::_task_link*)
+                0x00000000080013d8       0x34 ./src/os.o
+                0x00000000080013d8                OS::__addTask(OS::_task_link*)
  .text.SVC_Handler
-                0x0000000008001354        0x4 ./src/os.o
-                0x0000000008001354                SVC_Handler
+                0x000000000800140c        0x4 ./src/os.o
+                0x000000000800140c                SVC_Handler
  .text.PendSV_Handler
-                0x0000000008001358       0x34 ./src/os.o
-                0x0000000008001358                PendSV_Handler
+                0x0000000008001410       0x34 ./src/os.o
+                0x0000000008001410                PendSV_Handler
  .text.SysTick_Handler
-                0x000000000800138c       0x14 ./src/os.o
-                0x000000000800138c                SysTick_Handler
+                0x0000000008001444       0x14 ./src/os.o
+                0x0000000008001444                SysTick_Handler
  .text._GLOBAL__sub_I__ZN2OS4InitEv
-                0x00000000080013a0       0x10 ./src/os.o
- .text.strlen   0x00000000080013b0       0x10 /usr/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m/libg_nano.a(lib_a-strlen.o)
-                0x00000000080013b0                strlen
+                0x0000000008001458       0x10 ./src/os.o
+ .text.strlen   0x0000000008001468       0x10 /usr/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m/libg_nano.a(lib_a-strlen.o)
+                0x0000000008001468                strlen
  *(.rodata .rodata.* .constdata .constdata.*)
  .rodata.str1.4
-                0x00000000080013c0       0x27 ./system/src/stm32f1-stdperiph/misc.o
- *fill*         0x00000000080013e7        0x1 
+                0x0000000008001478       0x27 ./system/src/stm32f1-stdperiph/misc.o
+ *fill*         0x000000000800149f        0x1 
  .rodata.str1.4
-                0x00000000080013e8       0x31 ./system/src/stm32f1-stdperiph/stm32f10x_gpio.o
- *fill*         0x0000000008001419        0x3 
+                0x00000000080014a0       0x31 ./system/src/stm32f1-stdperiph/stm32f10x_gpio.o
+ *fill*         0x00000000080014d1        0x3 
  .rodata.str1.4
-                0x000000000800141c       0x30 ./system/src/stm32f1-stdperiph/stm32f10x_rcc.o
+                0x00000000080014d4       0x30 ./system/src/stm32f1-stdperiph/stm32f10x_rcc.o
  .rodata._ZN4Uart12timeoutErrorE
-                0x000000000800144c        0x4 ./src/modules/uart.o
-                0x000000000800144c                Uart::timeoutError
+                0x0000000008001504        0x4 ./src/modules/uart.o
+                0x0000000008001504                Uart::timeoutError
  .rodata.str1.4
-                0x0000000008001450       0x3c ./src/modules/uart.o
+                0x0000000008001508       0x3c ./src/modules/uart.o
  .rodata.str1.4
-                0x000000000800148c       0x50 ./src/main.o
-                                         0x4d (size before relaxing)
+                0x0000000008001544       0x78 ./src/main.o
+                                         0x75 (size before relaxing)
  *(vtable)
  *(.eh_frame*)
  *(.glue_7)
@@ -1900,37 +1900,37 @@ END GROUP
  *(.glue_7t)
  .glue_7t       0x0000000000000000        0x0 linker stubs
 
-.vfp11_veneer   0x00000000080014dc        0x0
+.vfp11_veneer   0x00000000080015bc        0x0
  .vfp11_veneer  0x0000000000000000        0x0 linker stubs
 
-.v4_bx          0x00000000080014dc        0x0
+.v4_bx          0x00000000080015bc        0x0
  .v4_bx         0x0000000000000000        0x0 linker stubs
 
-.iplt           0x00000000080014dc        0x0
+.iplt           0x00000000080015bc        0x0
  .iplt          0x0000000000000000        0x0 ./system/src/stm32f1-stdperiph/misc.o
 
-.rel.dyn        0x00000000080014dc        0x0
+.rel.dyn        0x00000000080015bc        0x0
  .rel.iplt      0x0000000000000000        0x0 ./system/src/stm32f1-stdperiph/misc.o
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x00000000080014dc                . = ALIGN (0x4)
-                0x00000000080014dc                __exidx_start = .
+                0x00000000080015bc                . = ALIGN (0x4)
+                0x00000000080015bc                __exidx_start = .
 
 .ARM.exidx
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x00000000080014dc                __exidx_end = .
-                0x00000000080014dc                . = ALIGN (0x4)
-                0x00000000080014dc                _etext = .
-                0x00000000080014dc                __etext = .
+                0x00000000080015bc                __exidx_end = .
+                0x00000000080015bc                . = ALIGN (0x4)
+                0x00000000080015bc                _etext = .
+                0x00000000080015bc                __etext = .
 
-.data_CCMRAM    0x0000000000000000        0x0 load address 0x00000000080014dc
+.data_CCMRAM    0x0000000000000000        0x0 load address 0x00000000080015bc
  FILL mask 0xff
  *(.data.CCMRAM .data.CCMRAM.*)
                 0x0000000000000000                . = ALIGN (0x4)
-                0x00000000080014dc                _sidata = LOADADDR (.data)
+                0x00000000080015bc                _sidata = LOADADDR (.data)
 
-.data           0x0000000020000000       0x28 load address 0x00000000080014dc
+.data           0x0000000020000000       0x28 load address 0x00000000080015bc
  FILL mask 0xff
                 0x0000000020000000                _sdata = .
                 0x0000000020000000                __data_start__ = .
@@ -1956,7 +1956,7 @@ END GROUP
                 0x0000000020000028                _edata = .
                 0x0000000020000028                __data_end__ = .
 
-.igot.plt       0x0000000020000028        0x0 load address 0x0000000008001504
+.igot.plt       0x0000000020000028        0x0 load address 0x00000000080015e4
  .igot.plt      0x0000000000000000        0x0 ./system/src/stm32f1-stdperiph/misc.o
 
 .bss_CCMRAM     0x0000000000000000        0x0
@@ -2178,7 +2178,7 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x0000000000000000     0x6fb7
+.debug_info     0x0000000000000000     0x6f0b
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x0000000000000000      0x63b ./system/src/stm32f1-stdperiph/misc.o
  .debug_info    0x000000000000063b      0xbd4 ./system/src/stm32f1-stdperiph/stm32f10x_gpio.o
@@ -2194,12 +2194,12 @@ END GROUP
  .debug_info    0x00000000000033af       0xd1 ./system/src/cmsis/vectors_stm32f10x.o
  .debug_info    0x0000000000003480      0x35b ./src/os/mutex.o
  .debug_info    0x00000000000037db      0x43d ./src/os/task.o
- .debug_info    0x0000000000003c18     0x1730 ./src/modules/uart.o
- .debug_info    0x0000000000005348      0x463 ./src/BlinkLed.o
- .debug_info    0x00000000000057ab      0xb42 ./src/main.o
- .debug_info    0x00000000000062ed      0xcca ./src/os.o
+ .debug_info    0x0000000000003c18     0x16ad ./src/modules/uart.o
+ .debug_info    0x00000000000052c5      0x463 ./src/BlinkLed.o
+ .debug_info    0x0000000000005728      0xb19 ./src/main.o
+ .debug_info    0x0000000000006241      0xcca ./src/os.o
 
-.debug_abbrev   0x0000000000000000     0x234c
+.debug_abbrev   0x0000000000000000     0x230b
  *(.debug_abbrev)
  .debug_abbrev  0x0000000000000000      0x188 ./system/src/stm32f1-stdperiph/misc.o
  .debug_abbrev  0x0000000000000188      0x1f9 ./system/src/stm32f1-stdperiph/stm32f10x_gpio.o
@@ -2215,12 +2215,12 @@ END GROUP
  .debug_abbrev  0x0000000000000e75       0x9d ./system/src/cmsis/vectors_stm32f10x.o
  .debug_abbrev  0x0000000000000f12      0x1f7 ./src/os/mutex.o
  .debug_abbrev  0x0000000000001109      0x2ae ./src/os/task.o
- .debug_abbrev  0x00000000000013b7      0x594 ./src/modules/uart.o
- .debug_abbrev  0x000000000000194b      0x1e7 ./src/BlinkLed.o
- .debug_abbrev  0x0000000000001b32      0x41e ./src/main.o
- .debug_abbrev  0x0000000000001f50      0x3fc ./src/os.o
+ .debug_abbrev  0x00000000000013b7      0x55a ./src/modules/uart.o
+ .debug_abbrev  0x0000000000001911      0x1e7 ./src/BlinkLed.o
+ .debug_abbrev  0x0000000000001af8      0x417 ./src/main.o
+ .debug_abbrev  0x0000000000001f0f      0x3fc ./src/os.o
 
-.debug_line     0x0000000000000000     0x4910
+.debug_line     0x0000000000000000     0x491f
  *(.debug_line)
  .debug_line    0x0000000000000000      0x3cc ./system/src/stm32f1-stdperiph/misc.o
  .debug_line    0x00000000000003cc      0x8a9 ./system/src/stm32f1-stdperiph/stm32f10x_gpio.o
@@ -2236,12 +2236,12 @@ END GROUP
  .debug_line    0x0000000000002d20       0xd4 ./system/src/cmsis/vectors_stm32f10x.o
  .debug_line    0x0000000000002df4      0x39e ./src/os/mutex.o
  .debug_line    0x0000000000003192      0x36d ./src/os/task.o
- .debug_line    0x00000000000034ff      0x66c ./src/modules/uart.o
- .debug_line    0x0000000000003b6b      0x318 ./src/BlinkLed.o
- .debug_line    0x0000000000003e83      0x5a8 ./src/main.o
- .debug_line    0x000000000000442b      0x4e5 ./src/os.o
+ .debug_line    0x00000000000034ff      0x67b ./src/modules/uart.o
+ .debug_line    0x0000000000003b7a      0x318 ./src/BlinkLed.o
+ .debug_line    0x0000000000003e92      0x5a8 ./src/main.o
+ .debug_line    0x000000000000443a      0x4e5 ./src/os.o
 
-.debug_frame    0x0000000000000000      0xeb4
+.debug_frame    0x0000000000000000      0xeb8
  *(.debug_frame)
  .debug_frame   0x0000000000000000       0x90 ./system/src/stm32f1-stdperiph/misc.o
  .debug_frame   0x0000000000000090      0x1e8 ./system/src/stm32f1-stdperiph/stm32f10x_gpio.o
@@ -2257,11 +2257,11 @@ END GROUP
  .debug_frame   0x00000000000008b8       0x20 ./system/src/cmsis/vectors_stm32f10x.o
  .debug_frame   0x00000000000008d8       0x90 ./src/os/mutex.o
  .debug_frame   0x0000000000000968       0x84 ./src/os/task.o
- .debug_frame   0x00000000000009ec      0x230 ./src/modules/uart.o
- .debug_frame   0x0000000000000c1c       0x34 ./src/BlinkLed.o
- .debug_frame   0x0000000000000c50       0x60 ./src/main.o
- .debug_frame   0x0000000000000cb0      0x1e4 ./src/os.o
- .debug_frame   0x0000000000000e94       0x20 /usr/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m/libg_nano.a(lib_a-strlen.o)
+ .debug_frame   0x00000000000009ec      0x234 ./src/modules/uart.o
+ .debug_frame   0x0000000000000c20       0x34 ./src/BlinkLed.o
+ .debug_frame   0x0000000000000c54       0x60 ./src/main.o
+ .debug_frame   0x0000000000000cb4      0x1e4 ./src/os.o
+ .debug_frame   0x0000000000000e98       0x20 /usr/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m/libg_nano.a(lib_a-strlen.o)
 
 .debug_str      0x0000000000000000    0x5683e
  *(.debug_str)
@@ -2293,16 +2293,16 @@ END GROUP
                                       0x4e1fb (size before relaxing)
  .debug_str     0x0000000000054ae0      0x1b9 ./src/os/task.o
                                       0x4e287 (size before relaxing)
- .debug_str     0x0000000000054c99      0xf83 ./src/modules/uart.o
-                                      0x4f436 (size before relaxing)
- .debug_str     0x0000000000055c1c       0x27 ./src/BlinkLed.o
+ .debug_str     0x0000000000054c99      0xed2 ./src/modules/uart.o
+                                      0x4f376 (size before relaxing)
+ .debug_str     0x0000000000055b6b       0xcf ./src/BlinkLed.o
                                       0x4e424 (size before relaxing)
- .debug_str     0x0000000000055c43      0xa42 ./src/main.o
+ .debug_str     0x0000000000055c3a      0xa4b ./src/main.o
                                       0x52ea3 (size before relaxing)
  .debug_str     0x0000000000056685      0x1b9 ./src/os.o
                                       0x4e907 (size before relaxing)
 
-.debug_loc      0x0000000000000000     0x2584
+.debug_loc      0x0000000000000000     0x260f
  *(.debug_loc)
  .debug_loc     0x0000000000000000      0x1cc ./system/src/stm32f1-stdperiph/misc.o
  .debug_loc     0x00000000000001cc      0x773 ./system/src/stm32f1-stdperiph/stm32f10x_gpio.o
@@ -2314,10 +2314,10 @@ END GROUP
  .debug_loc     0x000000000000166f       0xe4 ./system/src/cmsis/system_stm32f10x.o
  .debug_loc     0x0000000000001753       0xba ./src/os/mutex.o
  .debug_loc     0x000000000000180d       0xc9 ./src/os/task.o
- .debug_loc     0x00000000000018d6      0x989 ./src/modules/uart.o
- .debug_loc     0x000000000000225f       0x21 ./src/BlinkLed.o
- .debug_loc     0x0000000000002280      0x1c2 ./src/main.o
- .debug_loc     0x0000000000002442      0x142 ./src/os.o
+ .debug_loc     0x00000000000018d6      0xa14 ./src/modules/uart.o
+ .debug_loc     0x00000000000022ea       0x21 ./src/BlinkLed.o
+ .debug_loc     0x000000000000230b      0x1c2 ./src/main.o
+ .debug_loc     0x00000000000024cd      0x142 ./src/os.o
 
 .debug_macinfo
  *(.debug_macinfo)
