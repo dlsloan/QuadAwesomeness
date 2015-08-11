@@ -3,13 +3,13 @@
 ################################################################################
 
 # Add inputs and outputs from these tool invocations to the build variables 
+C_SRCS += \
+../src/_write.c 
+
 CPP_SRCS += \
 ../src/BlinkLed.cpp \
 ../src/main.cpp \
 ../src/os.cpp 
-
-C_SRCS += \
-../src/_write.c 
 
 OBJS += \
 ./src/BlinkLed.o \

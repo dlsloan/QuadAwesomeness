@@ -89,22 +89,21 @@ int kernel_main(void* args) {
 
 	u32 ticksPsecond = 10000;
 
-	Uart* uart1 = Uart::GetUart(Uart::AfroJack);
-	Uart* uart2 = Uart::GetUart(Uart::GPS);
-	Uart* uart3 = Uart::GetUart(Uart::XBee);
+	Uart* uart1 = Uart::GetUart(Uart::USB);
+	Uart* uart2 = Uart::GetUartIsrSafe(Uart::GPS);
 
 	char read_value = 0;
 	while(read_value != 'q'){
 		read_value = uart1->ReadByte(0);
 		uart1->WriteByte(read_value);
-		uart2->WriteByte(read_value);
-		uart3->WriteByte(read_value);
+		uart2->WriteHex(read_value,2,true);
+
 	}
 
 
 
 	// Infinite loop
-	int cnt = 10;
+	int cnt = 30;
 	while (cnt--)
 	{
 	  blinkLed.statusOn();
@@ -122,8 +121,8 @@ int kernel_main(void* args) {
 
 
 	  uart1->WriteBytes(writeUart1,strlen(writeUart1));
-	  uart2->WriteBytes(writeUart2,strlen(writeUart2));
-	  uart3->WriteBytes(writeUart3,strlen(writeUart3));
+	  uart2->WriteIsrSafe(writeUart2,strlen(writeUart2));
+
 	  ++seconds;
 
 	  // Count seconds on the trace device.

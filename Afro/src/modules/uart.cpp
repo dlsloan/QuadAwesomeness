@@ -4,10 +4,9 @@
 #include <task.h>
 #include <stm32f10x_rcc.h>
 #include "BlinkLed.h"
-extern BlinkLed blinkLed;
 
 
-Uart Uart::uarts[5] = {Uart(UART1_BASE),Uart(UART2_BASE),Uart(UART3_BASE),Uart(UART4_BASE),Uart(UART5_BASE)};
+Uart Uart::uarts[NUMBER_OF_UARTS] = {Uart(UART1_BASE),Uart(UART2_BASE)};//,Uart(UART3_BASE),Uart(UART4_BASE),Uart(UART5_BASE)};
 
 using namespace OS;
 
@@ -70,6 +69,8 @@ void Uart::Init() {
 			NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 3;
 			NVIC_InitStruct.NVIC_IRQChannelSubPriority = 0;
 			NVIC_Init(&NVIC_InitStruct);
+
+			SetBaud(BAUD_RATE_USB);
 			break;
 		case 1:
 			RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2,ENABLE);
@@ -94,6 +95,8 @@ void Uart::Init() {
 			NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 0;
 			NVIC_InitStruct.NVIC_IRQChannelSubPriority = 0;
 			NVIC_Init(&NVIC_InitStruct);
+
+			SetBaud(BAUD_RATE_GPS);
 			break;
 		case 2:
 			RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3,ENABLE);
@@ -119,6 +122,10 @@ void Uart::Init() {
 			NVIC_Init(&NVIC_InitStruct);
 			break;
 
+
+
+
+
 	}
 
 
@@ -126,8 +133,6 @@ void Uart::Init() {
 
 	// This is where we will do the register initializations that are all based on the base_address.
 
-	// Set the initial baud rate
-	SetBaud(115200);
 
 
 
@@ -175,14 +180,12 @@ void Uart::Init() {
 // A pointer to the specified uart.
 Uart * Uart::GetUart(UART_CONNECTION connection) {
 	Uart * pointer;
+
 	switch(connection) {
-	case AfroJack:
+	case USB:
 		pointer = &uarts[connection];
 		break;
 	case GPS:
-		pointer = &uarts[connection];
-		break;
-	case XBee:
 		pointer = &uarts[connection];
 		break;
 	default:
@@ -191,6 +194,49 @@ Uart * Uart::GetUart(UART_CONNECTION connection) {
 
 	pointer->Init();
 	return pointer;
+}
+
+Uart * Uart::GetUartIsrSafe(UART_CONNECTION connection) {
+	Uart * pointer;
+	GPIO_InitTypeDef GPIO_InitStruct;
+
+	if(connection != GPS)
+		return NULL;
+
+	pointer = &uarts[connection];
+
+	// Now if it was the GPS let's set up the port for output debugging without interrupts
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2,ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO,ENABLE);
+	// Tx
+	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_2;
+	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_2MHz;
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF_PP;
+	GPIO_Init(GPIOA,&GPIO_InitStruct);
+
+	// Rx
+	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_3;
+	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_2MHz;
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_Init(GPIOA,&GPIO_InitStruct);
+
+	// Now enable the UART
+
+	// Set the initial baud rate
+	pointer->SetBaud(BAUD_RATE_GPS);
+
+	// Set the CR2 first
+	UART_CR2(pointer->uartBase) = 0; // All default reset options are good
+
+	// Set the CR1
+	UART_CR1(pointer->uartBase) =	UART_CR1_UART_ENABLE | UART_CR1_WORD_LENGTH_8 | UART_CR1_WAKE_IDLE | UART_CR1_PARITY_DISABLE |
+							UART_CR1_PARITY_SELECTION_EVEN | UART_CR1_PARITY_INTERRUPT_DISABLE | UART_CR1_TXEI_DISABLE |
+							UART_CR1_TCI_DISABLE | UART_CR1_RXNEI_DISABLE | UART_CR1_IDLIE_DISABLE | UART_CR1_TE_ENABLE |
+							UART_CR1_RE_ENABLE | UART_CR1_RWU_ACTIVE | UART_CR1_NO_BREAK_SEND;
+
+	return pointer;
+
 }
 
 // This function will set the baud rate of the uart based on the baud number.
@@ -210,7 +256,34 @@ void Uart::SetBaud(int baudNumber) {
 }
 
 void Uart::WriteBasic(u8 data) {
+	// While the uart hardware buffer is full
+	while(!(UART_SR(this->uartBase) & UART_SR_TRANSMIT_DATA_EMPTY_INTERRUPT));
 	UART_DR(this->uartBase) = data;
+}
+
+void Uart::WriteIsrSafe(void * data, int nBytesToWrite) {
+
+	u8 * dataTemp = (u8*)data;
+	for(int i=0; i<nBytesToWrite; i++) {
+
+
+		WriteBasic(dataTemp[i]);
+	}
+}
+
+void Uart::WriteHex(u32 value, int digits, bool prefix) {
+	if (prefix) {
+		this->WriteBasic('0');
+		this->WriteBasic('x');
+	}
+	for (int i = digits; i > 0; i--) {
+		u8 val = (u8)((value >> ((i - 1) * 4)) & 0xF);
+		if (val < 10) {
+			this->WriteBasic((u8)(val + '0'));
+		} else {
+			this->WriteBasic((u8)(val - 10 + 'A'));
+		}
+	}
 }
 
 // This function will write the input data with the specified number of bytes to the uart. It may cause blocking if the uart buffer is full.

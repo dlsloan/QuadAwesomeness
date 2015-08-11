@@ -60,12 +60,20 @@
 #define UART_SR_READ_DATA_NOT_EMPTY_INTERRUPT 0x00000020
 #define UART_SR_TRANSMIT_DATA_EMPTY_INTERRUPT 0X00000080
 
+
+#define NUMBER_OF_UARTS 2
+#define BAUD_RATE_USB 115200
+#define BAUD_RATE_GPS 115200
 class Uart {
 public:
-	enum UART_CONNECTION {AfroJack = 0, GPS = 1, XBee = 2}; // The UART connections
+	enum UART_CONNECTION {USB = 0, GPS = 1}; // The UART connections
 
 	static Uart * GetUart(UART_CONNECTION connection); // Statically get one of the pre-allocated UART objects based on the enumeration
+	static Uart * GetUartIsrSafe(UART_CONNECTION connection);
 	void SetBaud(int baudNumber); // Set the baud rate of the UART
+
+	void WriteIsrSafe(void * data, int nBytesToWrite); // Writes the data to the UART buffer and may block/cause a task switch until all of the data is written.
+	void WriteHex(u32 value, int digits, bool prefix);
 
 	void WriteBasic(u8 data);
 
@@ -91,7 +99,7 @@ public:
 	volatile int uartRxReadPos;
 	volatile bool uartRxOverflow;
 
-	static Uart uarts[5]; // The array of all the pre-allocated UART objects
+	static Uart uarts[NUMBER_OF_UARTS]; // The array of all the pre-allocated UART objects
 	u32 uartBase; // The base address of the UART
 	u8 index;
 
