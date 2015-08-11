@@ -255,6 +255,7 @@ void Uart::SetBaud(int baudNumber) {
 	}
 }
 
+//
 void Uart::WriteBasic(u8 data) {
 	// While the uart hardware buffer is full
 	while(!(UART_SR(this->uartBase) & UART_SR_TRANSMIT_DATA_EMPTY_INTERRUPT));
