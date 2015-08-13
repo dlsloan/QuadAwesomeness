@@ -185,6 +185,8 @@ namespace OS {
  * 		Primary OS interrupt service routine, handles all task switching
  * 		MUST be LOWEST priority interrupt to prevent register (r4-r11) garbling
  */
+
+/*
 extern "C" void SVC_Handler(void) {
 
 }
@@ -204,12 +206,15 @@ extern "C" void PendSV_Handler(void) {
 			OS::triedSwitch = true;
 		}
 }
+// */
 
 /*	SysTick_isr
  * 		Handles counter tick for round robin scheduling and timer updates
  */
+/*
 extern "C" void SysTick_Handler(void) {
 	//TODO: implementation (differed switching following voluntary switch)
 	OS::_time += 1;
 	OS::SwitchTask();
 }
+// */

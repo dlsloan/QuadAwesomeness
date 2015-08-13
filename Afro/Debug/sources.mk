@@ -27,12 +27,12 @@ CPP_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
-src \
-src/modules \
-src/os \
-system/src/cmsis \
-system/src/cortexm \
-system/src/diag \
-system/src/newlib \
 system/src/stm32f1-stdperiph \
+system/src/newlib \
+system/src/diag \
+system/src/cortexm \
+system/src/cmsis \
+src \
+src/os \
+src/modules \
 
