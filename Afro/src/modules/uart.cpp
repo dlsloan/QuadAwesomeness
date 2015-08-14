@@ -323,7 +323,7 @@ void Uart::WriteBytes(void * data, int nBytesToWrite) {
 		/******************************************/
 		/***************UNCOMMENT******************/
 		/******************************************/
-		while(uartTxReadPos == new_position) OS::Task::Switch();
+		while(uartTxReadPos == new_position) OS::SwitchTask();
 
 		// Once the buffer is clear, we can write the data to the buffer
 		uartBufferTx[pos] = data_b[i];
@@ -382,7 +382,7 @@ void Uart::WriteByte(u8 data) {
 	/******************************************/
 	/***************UNCOMMENT******************/
 	/******************************************/
-	while(uartTxReadPos == new_position) OS::Task::Switch();
+	while(uartTxReadPos == new_position) OS::SwitchTask();
 
 	// Once the buffer is clear, we can write the data to the buffer
 	uartBufferTx[pos] = data;
@@ -446,7 +446,7 @@ int Uart::WriteBytesNonBlocking(void * data, int nBytesToWrite) {
 			/***************UNCOMMENT******************/
 			/******************************************/
 			// Call the operating system here to set the error
-			SetError((err*)&timeoutError);
+			SetError(timeoutError);
 
 			break;
 		}
@@ -513,12 +513,12 @@ int Uart::ReadBytes(void * dataBuffer, int nBytesToWaitAndRead, int timeout) {
 
 			if(timeout != 0 && (int)(currentTick - startTick) >= timeout) {
 				// Write the timeout error to the OS
-				SetError((err*)&timeoutError);
+				SetError(timeoutError);
 
 				return nBytesSuccessful;
 			}
 
-			OS::Task::Switch();
+			OS::SwitchTask();
 
 		}
 
@@ -557,7 +557,7 @@ int Uart::ReadBytesNonBlocking(void * dataBuffer, int nBytesToWaitAndRead) {
 
 	if(dataBuffer == NULL){
 		// Write the error code to the operating system
-		SetError((err*)inputBufferNull);
+		SetError(inputBufferNull);
 
 		return 0;
 	}
@@ -626,12 +626,12 @@ u8 Uart::ReadByte(int timeout) {
 
 		if(timeout != 0 && (int)(currentTick - startTick) >= timeout) {
 			// Write the error to the os
-			OS::SetError((err*)&timeoutError);
+			OS::SetError(timeoutError);
 
 			return 0;
 		}
 
-		OS::Task::Switch();
+		OS::SwitchTask();
 	}
 
 	// Once there is data, let's read it

@@ -25,8 +25,7 @@ src/os/mutex.o: ../src/os/mutex.cpp ../include/os.h ../include/types.h \
  ../system/include/stm32f1-stdperiph/stm32f10x_tim.h \
  ../system/include/stm32f1-stdperiph/stm32f10x_usart.h \
  ../system/include/stm32f1-stdperiph/stm32f10x_wwdg.h \
- ../system/include/stm32f1-stdperiph/misc.h ../include/os/task.h \
- ../include/os/mutex.h
+ ../system/include/stm32f1-stdperiph/misc.h ../include/os/mutex.h
 
 ../include/os.h:
 
@@ -89,7 +88,5 @@ src/os/mutex.o: ../src/os/mutex.cpp ../include/os.h ../include/types.h \
 ../system/include/stm32f1-stdperiph/stm32f10x_wwdg.h:
 
 ../system/include/stm32f1-stdperiph/misc.h:
-
-../include/os/task.h:
 
 ../include/os/mutex.h:

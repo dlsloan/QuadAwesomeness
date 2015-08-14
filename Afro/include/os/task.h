@@ -3,38 +3,41 @@
 
 #include <types.h>
 
+class Task;
+
+#include <os.h>
+
 namespace OS {
-	class Task;
-
-	typedef struct _task_link {
-	  Task* task;
-	  void* stackPointer;
-	  struct _task_link* next;
-	} task_link;
-
-
 	class Task {
 	public:
-		typedef struct {
-			u8 entry[32];
-		} StackEntry;
+		const err ErrorTaskActive = "Error Task Active";
 
-		typedef void (*taskFunc)(void*);
+		Task(OS::taskFunction taskStart, u32* stack, int stackLength);
 
-		Task(StackEntry* stack, int stackLength);
+		void Start(u32 startArg);
 
-		void Start(taskFunc entryFunc, void* startParam);
+		inline void __attribute__((always_inline))
+			_SignalStarted() { this->running = true; this->active = true; }
+		inline void __attribute__((always_inline))
+			_SignalReturned(int retVal) { this->running = false; this->retVal = retVal; }
+		inline void __attribute__((always_inline))
+			_SignalStopped() { this->running = false; this->active = false;}
+		inline bool __attribute__((always_inline))
+			_isRunning() { return this->running; }
+		inline bool __attribute__((always_inline)) isActive() {
+			return this->active || this->running;
+		}
 
-		void _End();
-
-		static void Switch();
-
-		err* errMsg;
 	private:
-		void* stack;
-		int stackSize; // bytes
-		task_link link;
+		OS::taskFunction taskStart;
+		Task* next;
+		u32* sp;
+		u32* stack;
+		err* errMsg;
+		int stackLength;
+		int retVal;
 		bool running;
+		bool active;
 	};
 }
 
