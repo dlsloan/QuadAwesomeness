@@ -6,20 +6,21 @@
 
 namespace OS {
 
+	typedef int (*taskFunction)(u32);
 
 	void Init();
 
 	void SetError(err*);
 	err* GetError();
 
-	Task* CurrentTask();
+	//Task* CurrentTask();
 
 	void SwitchTask();
 
 	u32 SystemTicks();
 
-	void __addTask(task_link*);
-	void __endTask();
+	//void __addTask(task_link*);
+	//void __endTask();
 	void __enterCritical();
 	void __exitCritical();
 }

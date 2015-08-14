@@ -9,11 +9,10 @@
 #include <stdlib.h>
 #include "diag/Trace.h"
 #include "BlinkLed.h"
-//#include <os.h>
+#include <os.h>
 #include <core_cmInstr.h>
 #include <uart.h>
 #include <string.h>
-#include <os_dbg.h>
 
 #include <_boot.h>
 
@@ -72,8 +71,10 @@ main(int argc, char* argv[])
 {
 	blinkLed.powerUp();
 	//return kernel_main(NULL);
-	//OS::Init();
-	os_dbg::Init();
+	Uart* uart2 = Uart::GetUartIsrSafe(Uart::GPS);
+	uart2->WriteIsrSafe((u8*)"Test\r\n", 6);
+	OS::Init();
+	//os_dbg::Init();
 	for (int cnt = 0; cnt < 30; cnt++) {
 		blinkLed.statusOn();
 		volatile int i = 2000000;

@@ -1,6 +1,8 @@
 #include <task.h>
 #include <os.h>
 
+//todo: task needs complete rework
+
 namespace OS {
 	typedef struct {
 	  u32 r0;
@@ -25,8 +27,8 @@ namespace OS {
 	} sw_stack_frame;
 
 	static void _TaskCleanUp() {
-		OS::CurrentTask()->_End();
-		OS::__endTask();
+		//OS::CurrentTask()->_End();
+		//OS::__endTask();
 	}
 
 	void Task::_End() {
@@ -52,7 +54,7 @@ namespace OS {
 		frame->pc = (u32)entryFunc;
 		frame->lr = (u32)_TaskCleanUp;
 		frame->psr = 0x21000000;
-		OS::__addTask(&this->link);
+		//OS::__addTask(&this->link);
 		this->running = true;
 	}
 

@@ -26,10 +26,9 @@ src/main.o: ../src/main.cpp ../system/include/diag/Trace.h \
  ../system/include/stm32f1-stdperiph/stm32f10x_tim.h \
  ../system/include/stm32f1-stdperiph/stm32f10x_usart.h \
  ../system/include/stm32f1-stdperiph/stm32f10x_wwdg.h \
- ../system/include/stm32f1-stdperiph/misc.h ../include/modules/uart.h \
- ../include/types.h ../include/os/mutex.h ../include/os.h \
- ../include/os/task.h ../include/os_dbg.h \
- ../system/include/newlib/_boot.h
+ ../system/include/stm32f1-stdperiph/misc.h ../include/os.h \
+ ../include/types.h ../include/os/task.h ../include/modules/uart.h \
+ ../include/os/mutex.h ../system/include/newlib/_boot.h
 
 ../system/include/diag/Trace.h:
 
@@ -93,16 +92,14 @@ src/main.o: ../src/main.cpp ../system/include/diag/Trace.h \
 
 ../system/include/stm32f1-stdperiph/misc.h:
 
-../include/modules/uart.h:
+../include/os.h:
 
 ../include/types.h:
 
-../include/os/mutex.h:
-
-../include/os.h:
-
 ../include/os/task.h:
 
-../include/os_dbg.h:
+../include/modules/uart.h:
+
+../include/os/mutex.h:
 
 ../system/include/newlib/_boot.h:
