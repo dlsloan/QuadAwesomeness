@@ -1,7 +1,7 @@
 //enum UART_CONNECTION {AfroJack, GPS, XBee}; // The UART connections
 #include <os.h>
 #include <uart.h>
-#include <task.h>
+//#include <task.h>
 #include <stm32f10x_rcc.h>
 #include "BlinkLed.h"
 
