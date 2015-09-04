@@ -113,6 +113,10 @@ void os_dbg::Init() {
 	Print("Kernel only task switch...\r\n");
 	SCB->ICSR = SCB_ICSR_PENDSVSET;
 
+	Print("Starting SysTick...\r\n");
+	//SysTick_Config(SystemCoreClock / OS_SW_FRQ);
+	SysTick_Config(SystemCoreClock / 100000);
+
 	Print("Setting up task...\r\n");
 	testTask.stackPointer = (u32)&testStack[TestStackSize - 8 * 2];
 	StartTask(&testTask, Test, 0);
@@ -120,4 +124,8 @@ void os_dbg::Init() {
 	Print("Task switching...\r\n");
 	SCB->ICSR = SCB_ICSR_PENDSVSET;
 	Print("Back to kernel\r\n");
+}
+
+extern "C" void SysTick_Handler(void) {
+	SCB->ICSR = SCB_ICSR_PENDSVSET;
 }
